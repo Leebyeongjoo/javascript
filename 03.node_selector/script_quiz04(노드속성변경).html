@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    .head{text-align: center;}
+    .mid{border:1px solid #777; text-align:center;overflow: hidden; margin: 0 auto; width:80%; padding: 5px;}
+    
+    
+    
+    .mid-1{border: 1px solid #777; float: left; width: 50%; box-sizing: border-box;}
+    .mid-1 img{width: 100%; height: 100%; box-sizing: border-box; padding: 5px;}
+    .mid-2{border: 1px solid; float: left; width: 50%; box-sizing: border-box;}
+    .mid-2 p{width: 300px; box-sizing: border-box; padding: 5px;}
+</style>
+</head>
+<body>
+   <div class="head">
+    <h2>야간모드</h2>
+    <button type="button" id="btn1">어둡게</button>
+    <button type="button" id="btn2">밝게</button>
+</div>
+<hr>
+    <div class="mid">
+        <div class="mid-1">
+        <img src="profile.png"> 
+        </div>
+        <div class="mid-2">
+            <p>자바스크립트(영어: JavaScript)는 객체 기반의 스크립트 프로그래밍 언어이다. 
+                이 언어는 웹 브라우저 내에서 주로 사용하며, 다른 응용 프로그램의 내장 객체에도 접근할 수 있는 기능을 가지고 있다.
+                 또한 Node.js와 같은 런타임 환경과 같이 서버 사이드 네트워크 프로그래밍에도 사용되고 있다</p>
+        </div>
+    </div>
+
+    <script>
+        var btn1 = document.getElementById("btn1");
+        var btn2 = document.getElementById("btn2");
+        var body = document.querySelector("body");
+        var all = document.querySelectorAll("h2, p")
+        btn1.onclick = function(){
+            
+            body.style.backgroundColor ="black";
+            for(var i = 0; i < all.length; i++){
+                all[i].style.color ="white";
+            }
+        }
+
+    </script>
+</body>
+</html>
