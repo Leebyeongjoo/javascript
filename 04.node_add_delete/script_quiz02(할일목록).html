@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h2>할일 삭제 기능은 아직 구현하지 마세요</h2>
+    
+    <h2>할일 목록 만들기</h2>
+    <h2 class="welcome"></h2>
+    <input type="text" placeholder="닉네임을 적으세요" class="write"><button id="btn1">확인</button><br>
+    <input type="text" placeholder="당신의할일을 적으세요" class="work"><button id="btn2">확인</button>
+    <div class ="list"> </div>
+
+
+<script>
+
+    var write = document.querySelector(".write");
+    var btn1 = document.getElementById("btn1");
+    var work = document.querySelector(".work");
+    var btn2 = document.getElementById("btn2");
+  
+    btn1.onclick = function(){
+
+    var ul = document.createElement("ul");
+    var li = document.createElement("li");
+    var a = document.createElement("a");
+    var text = document.createTextNode(write.value)
+    a.appendChild(text);
+    li.appendChild(a);
+    ul.appendChild(li);
+    document.querySelector(".write").appendChild(ul);
+    
+    var welcome = document.querySelector(".welcome");
+    welcome.innerHTML = write.value;
+    btn1.style.display="none";
+    write.style.display="none";
+
+    }
+    btn2.onclick = function(){
+    var list =document.querySelector(".list");
+    var ul = document.createElement("ul");
+    var li = document.createElement("li");
+    var a = document.createElement("a");
+    a.innerHTML = work.value;
+
+    li.appendChild(a);
+    ul.appendChild(li);
+    document.querySelector(".list").appendChild(ul);
+    work.value="";
+  
+
+}
+
+    
+
+
+</script>
+
+
+</body>
+
+
+
+</html>

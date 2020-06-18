@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+        window.onload = function(){
+            var count = 0;
+            var add = document.getElementById("add");
+            add.onclick = function(){
+                
+            //노드 생성
+            var li = document.createElement("li");
+            var a = document.createElement("a");
+            var text = document.createTextNode(++count)
+            //노드를 자식으로추가
+            a.appendChild(text);
+            a.href="https://www.naver.com";
+            li.appendChild(a);
+            document.querySelector(".list").appendChild(li);
+            
+            console.log(li);
+            console.log(a);
+            console.log(text);
+            
+            }
+        
+            //삭제
+            var remove =document.getElementById("remove");
+            remove.onclick = function(){
+                //removeChild(삭제할노드)
+                var list =document.querySelector(".list");
+                console.log(list);
+                console.log(list.childNodes);
+                console.log(list.childNodes[1]);
+
+                //children은 공백은 제외하고 지식에 포함된 노드만 선택
+                console.log(list.children);
+                list.removeChild(list.childNodes[0]); //list의 자식노드삭제
+
+            }
+        }
+    </script>
+
+    <button type="button" id="add">추가</button>
+    <button type="button" id="remove">삭제</button>
+    <ul class="list">
+
+    </ul>
+   
+    
+</body>
+</html>
