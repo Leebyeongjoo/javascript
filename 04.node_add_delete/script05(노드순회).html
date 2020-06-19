@@ -84,7 +84,7 @@
         function up(node){
             var table =document.querySelector(".table");
             var current = node.parentElement.parentElement;//현재tr
-            var previous =current.previousElementSibling;
+            var previous =current.previousElementSibling;//이전tr
         
         if(previous === null){
             alert("이전행이없습니다");

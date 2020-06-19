@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        
+        table,
+        thead tr th,
+        tbody tr td {border: 1px solid #777;}
+    </style>
+</head>
+<body>
+    <h2>EVENT속성을 이용해서 다음을 구현하세요.</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>내용</th>
+                <th>삭제</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class = "outList">
+                <td>1</td>
+                <td>첫글</td>
+                <td>hi</td>
+                <td><button type = "button" class = "list">삭제</button></td>
+            </tr>
+            <tr class = "outList">
+                <td>2</td>
+                <td>첫글</td>
+                <td>hi</td>
+                <td><button type = "button" class = "list">삭제</button></td>
+            </tr>
+            <tr class = "outList">
+                <td>3</td>
+                <td>첫글</td>
+                <td>hi</td>
+                <td><button type = "button" class = "list">삭제</button></td>
+            </tr>
+            <tr class = "outList">
+                <td>4</td>
+                <td>첫글</td>
+                <td>hi</td>
+                <td><button type = "button" class = "list">삭제</button></td>
+            </tr>
+            <tr class = "outList">
+                <td>5</td>
+                <td>첫글</td>
+                <td>hi</td>
+                <td><button type = "button" class = "list">삭제</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        var list = document.querySelectorAll(".list");
+        var outList = document.querySelectorAll(".outList");
+
+
+        for(var i = 0 ; i < list.length ; i++){
+            list[i].onclick = function(){   
+                
+                event.target.parentElement.parentElement.remove(); //현재 대상의 부모노드의 자체를 삭제
+
+            }   
+        }
+
+    </script>
+</body>
+</html>
