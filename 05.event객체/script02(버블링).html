@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="parent">
+
+        <ul >
+            <li class="list">1.홍길동</li>
+            <li class="list">2.이순신</li>
+            <li class="list">3.김길자</li>
+            <li class="list">4.고길자</li>
+            <li class="list">5.홍길자</li>
+        </ul>
+    </div>
+    선택된 태그값
+    <p class="result"> </p>
+
+    <script>
+        //이벤트 버블링이란, 부모에 걸어놓은 이벤트가 자식에도 전파되는 특성
+        var parent = document.querySelector(".parent");
+        var result = document.querySelector(".result");
+        parent.onclick = function(){
+            //버블링을 사용할때 부모클릭해도 작용되는 문제해결
+            if(event.target.tagName !== "LI")return;
+            console.log(event.target);//이벤트가 적용된 타겟
+            console.log(event.currentTarget);//실제이벤트가 걸려서 작동하는것
+            
+            console.dir(event.target.tagName);
+
+          var result = event.target.innerHTML;
+        }
+    </script>
+    
+</body>
+</html>
