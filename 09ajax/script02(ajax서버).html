@@ -4,7 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <style>
+        *{padding:0; margin:0;}
+        ul, li{list-style: none;}
+        .movieList {overflow: hidden; width: 80%; margin: 0 auto;}
+        .movieList .movie {float: left;}
+        .movie img {position: absolute; width: 100px;}
+        .movie .inner {padding-left: 110px;}
+        .move .genres li {display: inline-block;}
+        .movie p {overflow: scroll; height: 100px;}
+    </style>
+
 </head>
+
 <body>
 
     <div>
@@ -56,7 +69,10 @@
             tag += '<div class = "inner">';
             tag +=    '<h3 class = "title">'+title+'</h3>';
             tag +=    '<h3 class = "year">'+year+'</h3>';
-            tag +=    '<ul class = "genres">';
+            tag +=    '<ul class = "genres">'
+                        for(var j in genres){
+                            tag += '<li>'+genres[j] +'</li>'
+                        };
             tag +=     genres;
             tag +=     '</ul>';
             tag +=     '<p class = "summary">'+summary+'</p>';
