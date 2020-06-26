@@ -50,7 +50,7 @@
             }).then(function (jsonData) {
                 //지도에 맵을 생성하는 코드
                 map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 2,
+                    zoom: 15,
                     center: new google.maps.LatLng(lat, lng)
                 });
 
@@ -61,15 +61,37 @@
                 //마커를 루프로 돌려서 화면에 찍어주는 코드
                 //지도에 좌표를 찍어주는 코드
                 window.eqfeed_callback = function (results) {
-                    console.log(jsonData);
-                    for (var i = 0; i < results.features.length; i++) {
-                        var coords = results.features[i].geometry.coordinates;
-                        var latLng = new google.maps.LatLng(coords[1], coords[0]);
-                        var marker = new google.maps.Marker({
+                    
+                    var data = jsonData.stores;
+
+                    for(var i = 0; i < data.length; i++) {
+                        var latLng = new google.maps.LatLng(data[i].lat, data[i].lng);
+                        var market = new google.maps.Marker({
                             position: latLng,
-                            map: map
+                            map: map,
+                            title: data[i].addr + "\n" + data[i].name + "\n재고:" + (function() {
+
+                                if(data[i].remain_stat ==="plenty") {
+                                    return "100개 이상"
+                                } else if(data[i].remain_stat === "some") {
+                                    return "30-100개 이하"
+                                } else if(data[i].remain_stat === "few") {
+                                    return "30개 미만"
+                                } else {
+                                    return "재고없음"
+                                }
+                            })()
+                            
                         });
                     }
+                    // for (var i = 0; i < results.features.length; i++) {
+                    //     var coords = results.features[i].geometry.coordinates;
+                    //     var latLng = new google.maps.LatLng(coords[1], coords[0]);
+                    //     var marker = new google.maps.Marker({
+                    //         position: latLng,
+                    //         map: map
+                    //     });
+                    // }
                 }
             })
 
@@ -80,9 +102,11 @@
 
         }
         
-        (function(){
+        //1. 지도 API시작
+        function initMap() {
             navigator.geolocation.getCurrentPosition(ajax, coordFail);
-        })();
+        }
+        
 
     </script>
 

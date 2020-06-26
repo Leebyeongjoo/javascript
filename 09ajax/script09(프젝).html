@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+        <button type="button" class="map">화장실찾기</button>
+
+
+    <script>
+        var lat;
+        var lng;
+        var map;
+        function initMap(){
+            
+        }
+        
+        navigator.geolocation.getCurrentPosition(function sucess(position){
+        lat = position.coords.latitude;
+        lng = position.coords.longitude;
+            console.log(lat,lng)
+        },function(){
+            alert("실패")
+        })
+        var map = document.querySelector(".map");
+        map.onclick = function(){
+
+            function ajax(position){
+                console.log(position.coords.latitude)
+                console.log(position.coords.longitude)
+                
+                fetch("http://openapi.seoul.go.kr:8088/474858485862686336327379437178/JSON/SearchPublicToiletPOIService/1/5/").then(function(response){
+                    
+                    console.dir(response.status);
+                    
+                    if(response.status !== 200){
+                        alert("서버와의 통신에 실패했습니다")
+                        return;
+                    }else{
+                        return response.json();
+                    }
+                }).then(function(jsonData){
+                    
+                })
+            }
+        }
+        </script>
+    </body>
+    </html>
