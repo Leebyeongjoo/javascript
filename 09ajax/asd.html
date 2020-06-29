@@ -1,0 +1,124 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>마커 생성하기</title>
+
+    <style>
+        .map {
+            width: 5%;
+            height: 90%;
+        }
+        .btnList {
+            text-align: center;
+        }
+        
+    </style>
+
+</head>
+
+<body>
+    <h2 style="text-align: center; padding: 10px 0px;">내 주변 공중화장실 정보 표시</h2>
+    <div id="map" style="width:80%;height:800px;margin: 0 auto;" class="map"></div>
+    <div class = "btnList">
+    <button type = "button" class="btn1">1</button>
+    <button type = "button" class="btn2">2</button>
+    <button type = "button" class="btn3">3</button>
+    <button type = "button" class="btn4">4</button>
+    <button type = "button" class="btn5">5</button>
+    </div>
+
+    <script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=86cd8cd247e3989f81b7f6587c700e3e"></script>
+    <script>
+
+        function ajax(position) {
+            console.log(position);
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+
+            var link = `http://openapi.seoul.go.kr:8088/474858485862686336327379437178/JSON/SearchPublicToiletPOIService/1/5/`;
+            console.log(link)
+            console.log()
+            var btn1 = document.querySelector(".btn1");
+            var btn2 = document.querySelector(".btn2");
+            var btn3 = document.querySelector(".btn3");
+            var btn4 = document.querySelector(".btn4");
+            var btn5 = document.querySelector(".btn5");
+
+            btn1.onclick  = function(){
+                link = `http://openapi.seoul.go.kr:8088/474858485862686336327379437178/JSON/SearchPublicToiletPOIService/1/938/`;
+            }  
+            btn2.onclick  = function(){
+                link = `http://openapi.seoul.go.kr:8088/474858485862686336327379437178/JSON/SearchPublicToiletPOIService/939/1938/`;
+            }
+            btn3.onclick  = function(){
+                link = `http://openapi.seoul.go.kr:8088/474858485862686336327379437178/JSON/SearchPublicToiletPOIService/1939/2938/`;
+            }
+            btn4.onclick  = function(){
+                link = `http://openapi.seoul.go.kr:8088/474858485862686336327379437178/JSON/SearchPublicToiletPOIService/2939/3938/`;
+            }
+            btn5.onclick  = function(){
+                link = `http://openapi.seoul.go.kr:8088/474858485862686336327379437178/JSON/SearchPublicToiletPOIService/3939/4938/`;
+            }
+        
+            fetch(link).then(function (response) {
+                console.log(response)
+
+                if (response.status !== 200) {
+                    alert("경로탐색이 불가합니다.")
+                } else {
+                    return response.json();
+                }
+                console.log(link)
+            
+            }).then(function (publicData) {
+                            console.log(publicData.SearchPublicToiletPOIService);
+                            console.log(lat, lng)
+
+                            var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+                                mapOption = {
+                                    center: new kakao.maps.LatLng(lat, lng), // 지도의 중심좌표
+                                    level: 4    // 지도의 확대 레벨
+                                };
+
+                            var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+
+                            //마커가 표시될 위치입니다  
+                            for (var i = 0; i < publicData.SearchPublicToiletPOIService.row.length; i++) {
+
+                                 if (publicData.SearchPublicToiletPOIService.row[i].Y_WGS84.toFixed(2) === lat.toFixed(2) && publicData.SearchPublicToiletPOIService.row[i].X_WGS84.toFixed(2) === lng.toFixed(2)) {
+
+                                    var markerPosition = new kakao.maps.LatLng(publicData.SearchPublicToiletPOIService.row[i].Y_WGS84, publicData.SearchPublicToiletPOIService.row[i].X_WGS84);
+                                    //console.log(publicData.SearchPublicToiletPOIService.row[i].Y_WGS84.toFixed(2), publicData.SearchPublicToiletPOIService.row[i].X_WGS84.toFixed(2))
+                                 }
+
+
+                                // 마커를 생성합니다
+                                var marker = new kakao.maps.Marker({
+                                    position: markerPosition,
+                                    title: "유형 : " + publicData.SearchPublicToiletPOIService.row[i].ANAME + "\n주소명 : " + publicData.SearchPublicToiletPOIService.row[i].FNAME + "위도값 : " + publicData.SearchPublicToiletPOIService.row[i].Y_WGS84 + "경도값 : " + publicData.SearchPublicToiletPOIService.row[i].X_WGS84
+                                });
+
+                                // 마커가 지도 위에 표시되도록 설정합니다
+                                marker.setMap(map);
+
+                            }// end for
+                        })
+   
+
+                    }
+                
+                
+                        (function () {
+                            navigator.geolocation.getCurrentPosition(ajax);
+                        })()
+
+
+// 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+// marker.setMap(null);    
+    </script>
+</body>
+
+</html>

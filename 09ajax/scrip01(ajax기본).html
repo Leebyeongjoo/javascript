@@ -23,13 +23,13 @@
            //then은 익명함수를 실행할 때 실해읭 결과를 받아 처리할 함수를 넣어줍니다.
            //이런함수를 콜백함수라고 부릅니다.
            //비동기는 다른함수의 실행과 동시에 순서없이 실행됩니다.
-               //var callback = function(){
-               //console.log("이게먼저 출력되어야하나ㅡㄴ데...")
+      //          var callback = function(){
+      //          console.log("이게먼저 출력되어야하나ㅡㄴ데...")
                
-       // }
+      //  }
         
-         //   fetch("hi.txt").then(callback);
-           // console.log(2);
+      //      fetch("hi.txt").then(callback);
+      //      console.log(3);
            
            //위에 코드는 이렇게 변경됩니다.
            //fetch("hi.txt").then(function(){
@@ -39,19 +39,19 @@
            //콜백함수 첫번째 매개변수에 성공실패에 관련된 중요한 내용을 담아줍니다
            //text(),json()함수를 이용해서 다시한번 콜백함수로 문서에 내용을 전달 받습니다.
           // fetch("hi.txt").then(function(response){
-               //console.log(response);
+          //      console.log(response);
 
-           // if(response.status == 404){
-               // alert("응답이 없습니다");
-                //return;
+          //  if(response.status == 404){
+          //      alert("응답이 없습니다");
+          //       return;
           //  }else{
                 
-                //console.log(response.text())//프로미스
-              //  response.text().then(function(data){
-               //     console.log(data);
+          //       console.log(response.text())//프로미스
+          //      response.text().then(function(data){
+          //          console.log(data);
 
-               // })
-         //   }
+          //      })
+          //  }
 
 
                //               if(response.status == 200){
@@ -62,28 +62,6 @@
          //  })
 
          //4nd
-     
-     //  fetch("hi.json").then(function(response){
-       //      if(response.status == 404){//요청실패
-         //        alert("요청에 실패했습니다.");
-           //      return;
-            // }else{//요청성공
-              //  return response.json();//다음 callback함수 then으로 데이터를 리턴
-
-             //}
-           // }).then(function(data){
-              
-              
-             //   console.log(data);
-               // var id = date.user_id;
-                //var name = date.user_name;
-                //var age = date.user_age;
-                
-              //  document.querySelector(".id").innerHTML =id;
-               // document.querySelector(".name").innerHTML =name;
-                //document.querySelector(".age").innerHTML =age;
-
-                //}) 
                 fetch("hi.json").then(function(response){
                     if(response.status == 404){ //요청실패
                         alert("요청에 실패ㅡㅡ");

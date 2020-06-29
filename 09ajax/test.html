@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0 auto;
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+
+        header {
+            color: white;
+            background-color: rgb(240, 176, 57);
+            height: 50px;
+            text-align: center;
+        }
+
+        body {
+            position: relative;
+        }
+
+        .search,
+        .btnList {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            z-index: 30;
+            margin: 10px;
+            right: 0;
+        }
+    </style>
+
+    <script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fee12ba582379d36d00344b802b254cb"></script>
+</head>
+
+<body>
+    <header><b>화장실 찾기 서비스</b></header>
+
+    <div id="map" style="width:80%;height:1300px;">
+        <div class="btnList">
+            <button type="button">1</button>
+            <button type="button">2</button>
+            <button type="button">3</button>
+            <button type="button">4</button>
+            <button type="button">5</button>
+        </div>
+    </div>
+
+
+
+    <script>
+
+        //페이지 로딩시 서울중심점을 기준으로 좌표를 생성합니다.
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+            mapOption = {
+                center: new kakao.maps.LatLng(37.5642135, 127.0016985), // 지도의 중심좌표
+                level: 3 // 지도의 확대 레벨
+            };
+        // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+
+        function panTo() {
+            // 이동할 위도 경도 위치를 생성합니다 
+            var moveLatLon = new kakao.maps.LatLng(33.450580, 126.574942);
+
+            // 지도 중심을 부드럽게 이동시킵니다
+            // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+            map.panTo(moveLatLon);
+        }
+
+        ///////////////지도 불러오기//////////////////
+        //474858485862686336327379437178
+        //http://openAPI.seoul.go.kr:8088/474858485862686336327379437178/xml/SearchPublicToiletPOIService/1/5/
+
+        let btnList = document.querySelector(".btnList");
+
+        let btnNum = 0;
+
+        btnList.onclick = function () {
+            //누른게 버튼이 아니면 종료해줌
+            console.log(event.target);
+            if (event.target.tagName !== "BUTTON") return;
+            console.log(event.target.innerHTML);
+            btnNum = event.target.innerHTML;
+            console.log(btnNum);
+            navigator.geolocation.getCurrentPosition(success, fail);
+        }
+
+        function success(position) {
+            //데이터따옴
+            fetch(`http://openAPI.seoul.go.kr:8088/474858485862686336327379437178/json/SearchPublicToiletPOIService/${--btnNum}001/${++btnNum}000/`).then(function (response) {
+                if (response.status == 404) {
+                    alert('요청에 실패했습니다.');
+                    return;
+                } else {
+                    return response.json();
+                }
+            }).then(function (jsonData) {
+                console.log(jsonData);
+                //좌표 따옴
+                let lat = position.coords.latitude;
+                let lng = position.coords.longitude;
+
+                data = jsonData.SearchPublicToiletPOIService.row;
+
+                setCenter(lat, lng);
+                var positions = new Array();
+
+                console.log(data);
+                for (let i = 0; i < data.length; i++) {
+                    var distance = Math.sqrt(Math.pow(lng - data[i].X_WGS84, 2) + Math.pow(lat - data[i].Y_WGS84, 2));
+                    console.log(distance);
+                    if (distance < 126.5) {
+                        // let position = `{"title": "${data[i].FNAME}", " latlng": "new kakao.maps.LatLng(${new kakao.maps.LatLng(lat, lng)})"}`;
+                        var pPoint = {
+                            title: data[i].FNAME,
+                            latlng: new kakao.maps.LatLng(data[i].Y_WGS84, data[i].X_WGS84)
+                        }
+                        console.log(pPoint);
+                        positions.push(pPoint);
+                    }
+                }
+
+                console.log(positions);
+                // 마커 이미지의 이미지 주소입니다
+                var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
+                //마커를 찍ㄱ습니다
+                for (let j = 0; j < positions.length; j++) {
+
+                    // 마커 이미지의 이미지 크기 입니다
+                    var imageSize = new kakao.maps.Size(24, 35);
+
+                    // 마커 이미지를 생성합니다    
+                    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+                    // 마커를 생성합니다
+                    var marker = new kakao.maps.Marker({
+                        map: map, // 마커를 표시할 지도
+                        position: positions[j].latlng, // 마커를 표시할 위치
+                        title: positions[j].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                        image: markerImage // 마커 이미지 
+                    });
+                    console.log(positions[j].latlng);
+                    marker.setMap(map);
+                    kakao.maps.event.addListener(marker, 'click', function () {
+                        location.href = (`https://map.kakao.com/link/to/화장실,${positions[j].latlng.Ha},${positions[j].latlng.Ga}`);
+                    })
+                } //마커찍기끗
+            }
+            )
+        }
+
+        function fail() {
+            alert("위치정보 수신에 동의해야 이용할 수 있습니다.");
+        }
+
+        function setCenter() {
+            // 이동할 위도 경도 위치를 생성합니다 
+            var moveLatLon = new kakao.maps.LatLng(arguments[0], arguments[1]);
+
+            // 지도 중심을 이동 시킵니다
+            map.setCenter(moveLatLon);
+        }
+
+        //길찾기..?
+        //https://map.kakao.com/?map_type=TYPE_MAP&target=car&rt=%2C%2C523953%2C1084098&rt1=&rt2=%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%8C%90%EA%B5%90%EC%98%A4%ED%94%BC%EC%8A%A4&rtIds=%2C&rtTypes=%2C
+        //위도경도 출발점하고 검색
+
+        //https://map.kakao.com/?map_type=TYPE_MAP&target=car&rt=%2C%2C523953%2C1084098&rt1=&rt2=%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%8C%90%EA%B5%90%EC%98%A4%ED%94%BC%EC%8A%A4&rtIds=%2C&rtTypes=%2C
+    </script>
+</body>
+
+</html>

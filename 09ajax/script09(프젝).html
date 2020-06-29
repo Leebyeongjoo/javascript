@@ -13,9 +13,13 @@
         var lat;
         var lng;
         var map;
+      
+      
         function initMap(){
-            
-        }
+    
+         };
+         
+      
         
         navigator.geolocation.getCurrentPosition(function sucess(position){
         lat = position.coords.latitude;
@@ -25,6 +29,13 @@
             alert("실패")
         })
         var map = document.querySelector(".map");
+       
+        mapOption = {
+            center:new kakao.maps.LatLng(33.450701, 126.570667),
+            level:3
+        };
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+
         map.onclick = function(){
 
             function ajax(position){
@@ -35,7 +46,7 @@
                     
                     console.dir(response.status);
                     
-                    if(response.status !== 200){
+                    if(response.status !== 404){
                         alert("서버와의 통신에 실패했습니다")
                         return;
                     }else{
